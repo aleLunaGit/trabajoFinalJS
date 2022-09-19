@@ -186,9 +186,10 @@ function buscarP() {
     }, 0);
 
     setTimeout(() => {
-        for (let i = 0; i < registroClientes.length; i++) {
 
-            if (registroClientes[i][`dni`] == dni.value) {
+        registroClientes.forEach((dnii) => {
+            i = 0;         
+            if (registroClientes[i][`dni`] == dnii.value) {
                 console.log(`CLIENTE ENCONTRADO`);
                 let dniEncontrado = document.createElement(`div`);
                 dniEncontrado.innerHTML = `<br><p> El/la cliente ${registroClientes[i][`nombre`]} ${registroClientes[i][`apellido`]} tiene vigente una operación de préstamo </p>`;
@@ -207,10 +208,10 @@ function buscarP() {
                     icon: 'error',
                     title: 'CLIENTE NO ENCONTRADO',
                     text: 'Revisé el DNI o intente con otro',
-                })
+                });
+                i++
             }
-
-        }
+        })
     }, 5000);
 
 }
@@ -228,16 +229,15 @@ localStorage.getItem("registroClientes") ?
 // 
 
 fetch("https://api-dolar-argentina.herokuapp.com/api/dolaroficial")
-.then(response => response.json())
-.then(data => {
+    .then(response => response.json())
+    .then(data => {
 
-    let cotireal = document.createElement(`p`);
-    cotireal.innerHTML = `El precio del dolar actualmente es de ${data.compra} ARS`;
-    cotizacion.appendChild(cotireal)
-// ACTUALIZAR COTIZACION CADA 10 SEG
-    setInterval(() => {
+        let cotireal = document.createElement(`p`);
         cotireal.innerHTML = `El precio del dolar actualmente es de ${data.compra} ARS`;
-    }, 10000);
+        cotizacion.appendChild(cotireal)
+        // ACTUALIZAR COTIZACION CADA 10 SEG
+        setInterval(() => {
+            cotireal.innerHTML = `El precio del dolar actualmente es de ${data.compra} ARS`;
+        }, 10000);
 
-})
-
+    })
